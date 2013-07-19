@@ -1,0 +1,53 @@
+#!/bin/sh
+
+#
+# 从制定的一个文件夹中的找出文件名，并且从中删除另外一个
+#
+
+#
+# xrm 目录1 目录2
+# 扫描目录1里的文件名，并且从目录2中删除与目录1中文件名相同的
+#
+
+# 检查参数
+if [ $# != 2 ]; then
+	echo "param invalid"
+	exit 1
+fi
+
+if [ ! -d $1 ]; then
+	echo "param1 is not a directory"
+	exit 1
+fi
+
+if [ ! -d $2 ]; then
+	echo "param2 is not a directory"
+	exit 1
+fi
+
+echo check "$1" and "$2", same file name will be deleted form "$2"
+# 检查目录2的后面是否有斜杠
+touch ~/tmp.grep
+echo "$2" > ~/tmp.grep
+if [ `grep '*/' ~/tmp.grep` ]; then
+	check_dir2 = 1
+else
+	check_dir2 = 0
+fi
+rm -r ~/tmp.grep
+
+# MAIN
+for file1 in $(ls $1) ; do
+	for file2 in $(ls $2) ; do
+		if [ "$file1" = "$file2" ]; then
+			echo "$file1"
+			if [ $check_dir2 ]; then
+				rm -f "$2$file2"
+			else
+				rm -f "$2/$file2"
+			fi
+		fi
+	done
+done
+
+exit 0
