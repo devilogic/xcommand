@@ -9,23 +9,28 @@
 # 扫描目录1里的文件名，并且从目录2中删除与目录1中文件名相同的
 #
 
+usage(){
+	echo "xrm [dir1] [dir2]"
+	echo check dir1 and dir2, same file name will be deleted form dir2
+}
+
 # 检查参数
-if [ $# != 2 ]; then
+if [ $# != 2 ] || [ ! -d $1 ] || [ ! -d $2 ]; then
 	echo "param invalid"
+	usage
 	exit 1
 fi
 
-if [ ! -d $1 ]; then
-	echo "param1 is not a directory"
-	exit 1
-fi
+#if [ ! -d $1 ]; then
+#	echo "param1 is not a directory"
+#	exit 1
+#fi
 
-if [ ! -d $2 ]; then
-	echo "param2 is not a directory"
-	exit 1
-fi
+#if [ ! -d $2 ]; then
+#	echo "param2 is not a directory"
+#	exit 1
+#fi
 
-echo check "$1" and "$2", same file name will be deleted form "$2"
 # 检查目录2的后面是否有斜杠
 touch ~/tmp.grep
 echo "$2" > ~/tmp.grep
